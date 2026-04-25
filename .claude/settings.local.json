@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(curl -s http://localhost:11434/api/tags)",
+      "Bash(python3 scout_agent.py)",
+      "Bash(echo \"scout PID: $!\")",
+      "Bash(python3 writer_agent.py)",
+      "Bash(echo \"writer PID: $!\")",
+      "Read(//private/tmp/**)",
+      "Bash(kill 16818 16872 16948 17722 17737)",
+      "Bash(awk '{print $2}')",
+      "Bash(xargs kill *)",
+      "Bash(python3 -u /Users/liroymarzec/Desktop/NEURONEWS/scout_agent.py)",
+      "Bash(python3 -u /Users/liroymarzec/Desktop/NEURONEWS/writer_agent.py)",
+      "Bash(awk '{print $2, $11, $12}')",
+      "Bash(python3 -u /Users/liroymarzec/Desktop/NEURONEWS/translation_agent.py)",
+      "Bash(echo \"translator PID: $!\")",
+      "Bash(awk '{print $2, $11, $12, \"cpu=\"$3\"%\", \"mem=\"$4\"%\"}')",
+      "Skill(update-config)",
+      "Bash(awk '{print $2, $10, $11}')"
+    ]
+  }
+}
