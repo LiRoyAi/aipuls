@@ -1,0 +1,28 @@
+# Secrets
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+venv/
+.venv/
+env/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Logs
+/tmp/*.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database — COMMENT THIS OUT if you want to bundle the DB with the deployment
+# (required for Vercel read-only deployment)
+# neuronews.db

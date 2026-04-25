@@ -1,0 +1,17 @@
+{
+  "name": "aipuls-portal",
+  "version": "1.0.0",
+  "description": "AIPULS.PL — AI news portal (Node.js Express wrapper around portal.py)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^3.0.0"
+  }
+}

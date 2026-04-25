@@ -1,0 +1,15 @@
+# AIPULS Portal — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Core portal
+feedparser>=6.0.11
+requests>=2.31.0
+schedule>=1.2.1
+resend>=2.0.0
+
+# Translation agent
+transformers>=4.40.0
+torch>=2.2.0
+
+# Standard library — no install needed:
+# sqlite3, os, re, html, hashlib, json, http.server, datetime, subprocess
