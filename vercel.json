@@ -6,9 +6,6 @@
       "dest": "api/index.py"
     }
   ],
-  "env": {
-    "SITE_URL": "@site_url"
-  },
   "functions": {
     "api/index.py": {
       "maxDuration": 30
