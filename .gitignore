@@ -26,3 +26,4 @@ Thumbs.db
 # Database — COMMENT THIS OUT if you want to bundle the DB with the deployment
 # (required for Vercel read-only deployment)
 # neuronews.db
+.vercel
