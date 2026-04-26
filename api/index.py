@@ -178,6 +178,26 @@ def app(environ, start_response):
         ])
         return [resp]
 
+    # ── GET /static/* — serve bundled static files ────────────────────────────
+    if method == "GET" and path.startswith("/static/"):
+        filename = path[len("/static/"):]
+        static_dir = os.path.join(_root, "static")
+        filepath = os.path.realpath(os.path.join(static_dir, filename))
+        if filepath.startswith(static_dir) and os.path.isfile(filepath):
+            ext = filename.rsplit(".", 1)[-1].lower()
+            types = {"png":"image/png","jpg":"image/jpeg","ico":"image/x-icon",
+                     "svg":"image/svg+xml","css":"text/css","js":"application/javascript"}
+            ctype = types.get(ext, "application/octet-stream")
+            with open(filepath, "rb") as f: body = f.read()
+            start_response("200 OK", [
+                ("Content-Type", ctype),
+                ("Content-Length", str(len(body))),
+                ("Cache-Control", "public, max-age=86400"),
+            ])
+            return [body]
+        start_response("404 Not Found", [("Content-Type","text/plain")])
+        return [b"Not found"]
+
     # ── GET / all other routes — delegate to portal ───────────────────────────
     if method != "GET":
         start_response("405 Method Not Allowed", [("Content-Type","text/plain")])

@@ -1174,6 +1174,8 @@ def page_shell(title, lang, body, desc="", og_grad="", canonical=""):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080810">
+<link rel="icon" type="image/png" href="/static/favicon.png">
+<link rel="apple-touch-icon" href="/static/favicon.png">
 <title>{esc_title} · AIFAKT.COM</title>
 <meta name="description" content="{esc_desc}">
 <meta name="robots" content="index,follow">
@@ -1899,7 +1901,9 @@ class Handler(BaseHTTPRequestHandler):
         if lang not in LANG_META: lang = "pl"
         path = p.path.rstrip("/") or "/"
 
-        if path in ("/",""):
+        if m := re.match(r'^/static/(.+)$', path):
+            self._static(m.group(1))
+        elif path in ("/",""):
             self._html(render_index(lang))
         elif m := re.match(r'^/article/(\d+)$', path):
             page = render_article(int(m.group(1)), lang)
@@ -1948,6 +1952,22 @@ class Handler(BaseHTTPRequestHandler):
                 self._respond(400, "application/json", b'{"ok":false}')
         else:
             self._respond(404, "text/plain", b"Not found")
+
+    def _static(self, filename):
+        _static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+        filepath = os.path.realpath(os.path.join(_static_dir, filename))
+        if not filepath.startswith(_static_dir) or not os.path.isfile(filepath):
+            self._respond(404, "text/plain", b"Not found"); return
+        ext = filename.rsplit(".", 1)[-1].lower()
+        types = {"png":"image/png","jpg":"image/jpeg","ico":"image/x-icon",
+                 "svg":"image/svg+xml","css":"text/css","js":"application/javascript"}
+        ctype = types.get(ext, "application/octet-stream")
+        with open(filepath, "rb") as f: body = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "public, max-age=86400")
+        self.end_headers(); self.wfile.write(body)
 
     def _html(self, body, code=200):
         enc = (body or "").encode("utf-8")
