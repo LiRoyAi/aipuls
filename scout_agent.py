@@ -4,7 +4,7 @@ from datetime import datetime
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "llama3.2:3b"
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 MIN_SCORE = 50
 HIGH_SCORE_TRIGGER = 80
 
@@ -93,7 +93,7 @@ def run():
         writer_agent.run()
 
 if __name__ == "__main__":
-    print("AIPULS Scout v4 - " + str(len(FEEDS)) + " zrodel, trigger writer @" + str(HIGH_SCORE_TRIGGER))
+    print("AIFAKT Scout v4 - " + str(len(FEEDS)) + " zrodel, trigger writer @" + str(HIGH_SCORE_TRIGGER))
     run()
     schedule.every(3).minutes.do(run)
     while True:

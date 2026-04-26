@@ -2,7 +2,7 @@ import sqlite3, requests, os, time, schedule, json, re
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 QUEUE_DIR = Path("/tmp/social_queue")
 
 # --- Credentials (set as env vars) ---
@@ -17,7 +17,7 @@ YOUTUBE_REFRESH_TOKEN = os.getenv("YOUTUBE_REFRESH_TOKEN", "")
 # --- Hashtags ---
 BASE_HASHTAGS = [
     "#AI", "#SztucznaInteligencja", "#AINews", "#TechPL",
-    "#MachineLearning", "#AIPULS", "#AIPoPolsku",
+    "#MachineLearning", "#AIFAKT", "#AIPoPolsku",
     "#Technologia", "#FutureTech", "#AITools", "#PolskaAI",
 ]
 AVATAR_HASHTAGS = {
@@ -85,7 +85,7 @@ def build_caption(title, script, avatar, platform):
         body = (
             f"{hook}\n\n"
             f"{use}\n\n"
-            f"👤 {avatar} — {bio} | AIPULS.PL\n\n"
+            f"👤 {avatar} — {bio} | AIFAKT.COM\n\n"
             f"━━━━━━━━━━━━━━━━━\n"
             f"🔔 Subskrybuj po więcej AI po polsku!\n"
             f"━━━━━━━━━━━━━━━━━\n\n"
@@ -97,7 +97,7 @@ def build_caption(title, script, avatar, platform):
             f"{hook}\n\n"
             f"{cta}\n\n"
             f"━━━━━━━━━━\n"
-            f"👉 Obserwuj @aipuls.pl po więcej AI po polsku!\n\n"
+            f"👉 Obserwuj @aifakt.com po więcej AI po polsku!\n\n"
             f"{tags}"
         )
 
@@ -261,7 +261,7 @@ def post_youtube(title, script, avatar):
                 "snippet": {
                     "title": yt_title,
                     "description": desc,
-                    "tags": ["AI", "SztucznaInteligencja", "AIPULS", avatar],
+                    "tags": ["AI", "SztucznaInteligencja", "AIFAKT", avatar],
                     "categoryId": "28",
                 },
                 "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": False},
@@ -347,7 +347,7 @@ def show():
 
 
 if __name__ == "__main__":
-    print("AIPULS Social Agent v1 — TikTok / Instagram / YouTube Shorts")
+    print("AIFAKT Social Agent v1 — TikTok / Instagram / YouTube Shorts")
     creds = {
         "TIKTOK":    bool(TIKTOK_ACCESS_TOKEN),
         "INSTAGRAM": bool(INSTAGRAM_ACCESS_TOKEN),

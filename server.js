@@ -33,7 +33,7 @@ const path         = require("path");
 
 const PORT        = parseInt(process.env.PORT        || "3000",  10);
 const PORTAL_PORT = parseInt(process.env.PORTAL_PORT || "8081",  10);
-const DB_PATH     = process.env.DB_PATH  || path.join(__dirname, "neuronews.db");
+const DB_PATH     = process.env.DB_PATH  || path.join(__dirname, "aifakt.db");
 const SITE_URL    = process.env.SITE_URL || "";
 const PYTHON      = process.env.PYTHON   || "python3";
 

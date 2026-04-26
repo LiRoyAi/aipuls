@@ -3,7 +3,7 @@ from datetime import datetime
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "qwen2.5:14b"
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 
 def init_db():
     c = sqlite3.connect(DB_PATH)
@@ -34,7 +34,7 @@ def ask(prompt):
 def build_prompt(title, summary, score):
     urgency = "PILNE - " if score >= 80 else ""
     return (
-        "Jestes Michal - doswiadczony dziennikarz AIPULS.PL, polskiego serwisu o AI.\n"
+        "Jestes Michal - doswiadczony dziennikarz AIFAKT.COM, polskiego serwisu o AI.\n"
         "Piszesz dla Polakow bez technicznego zaplecza. Twoj styl: precyzyjny, konkretny, bez buzzwordow.\n\n"
         "ARTYKUL ZRODLOWY:\n"
         "TYTUL: " + title + "\n"
@@ -110,7 +110,7 @@ def show():
     c.close()
 
 if __name__ == "__main__":
-    print("AIPULS Writer Agent v2 - Ctrl+C zatrzymuje")
+    print("AIFAKT Writer Agent v2 - Ctrl+C zatrzymuje")
     run()
     show()
     schedule.every(10).minutes.do(run)

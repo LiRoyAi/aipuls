@@ -1,7 +1,7 @@
 import sqlite3, time, schedule, os
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 NLLB_MODEL = "facebook/nllb-200-distilled-600M"
 SOURCE_LANG = "pol_Latn"
 LANGS = {
@@ -93,7 +93,7 @@ def run(model):
     c.close()
 
 if __name__ == "__main__":
-    print("AIPULS Translation Agent - Ctrl+C zatrzymuje")
+    print("AIFAKT Translation Agent - Ctrl+C zatrzymuje")
     model = load_nllb()
     if not model:
         exit(1)

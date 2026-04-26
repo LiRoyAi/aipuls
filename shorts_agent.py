@@ -3,7 +3,7 @@ from datetime import datetime
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "qwen2.5:14b"
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 
 AVATARS = {
     "MAKS":  "dziennikarz breaking news - energiczny, pilny, mowi jak reporter na zywo",
@@ -104,7 +104,7 @@ def build_prompt(avatar, title, content, score):
     urgency = "To PILNY news - " if score >= 85 else ""
     return (
         "Jestes " + avatar + " - " + persona + ".\n"
-        "Nagrywasz SHORT na TikTok/Reels/YouTube Shorts dla AIPULS.PL.\n\n"
+        "Nagrywasz SHORT na TikTok/Reels/YouTube Shorts dla AIFAKT.COM.\n\n"
         "TEMAT: " + urgency + title + "\n"
         "KONTEKST: " + (content or "")[:500] + "\n\n"
         "ZASADY SKRYPTU:\n"
@@ -202,7 +202,7 @@ def show():
 
 
 if __name__ == "__main__":
-    print("AIPULS Shorts Agent v1 - avatary: MAKS / ZARA / VIKTOR")
+    print("AIFAKT Shorts Agent v1 - avatary: MAKS / ZARA / VIKTOR")
     run()
     show()
     schedule.every(10).minutes.do(run)

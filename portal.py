@@ -8,7 +8,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs
 
-DB_PATH  = os.getenv("DB_PATH",  os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db"))
+DB_PATH  = os.getenv("DB_PATH",  os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db"))
 PORT     = int(os.getenv("PORT", "8081"))
 _SITE_URL_ENV = os.getenv("SITE_URL", "").rstrip("/")
 
@@ -38,7 +38,7 @@ AVATAR_META = {
               "full":"Doktorantka kognitywistyki z pasją do popularyzacji nauki. ZARA specjalizuje się w artykułach typu 'jak to działa' i 'co to dla mnie znaczy'. Jej teksty czytają zarówno studenci jak i seniorzy."},
     "VIKTOR":{"color":"#34d399","bg":"rgba(52,211,153,.12)","role":"Strateg Biznesu","emoji":"📈",
               "desc":"Myśli w ROI, mówi w liczbach. Każdy artykuł to analiza szansy biznesowej z konkretnymi kwotami.",
-              "full":"15 lat w konsultingu strategicznym. VIKTOR filtruje newsy AI przez pryzmat polskiego biznesu – małych firm, freelancerów i korporacji. Jego sekcja 'Szansa biznesowa' to najczęściej kopiowany element AIPULS."},
+              "full":"15 lat w konsultingu strategicznym. VIKTOR filtruje newsy AI przez pryzmat polskiego biznesu – małych firm, freelancerów i korporacji. Jego sekcja 'Szansa biznesowa' to najczęściej kopiowany element AIFAKT."},
     "LENA":  {"color":"#38bdf8","bg":"rgba(56,189,248,.12)","role":"Analityk Research","emoji":"🔬",
               "desc":"Czyta arXiv jak inni czytają Twittera. Przetwarza papers naukowe na zrozumiałe insighty.",
               "full":"Absolwentka matematyki i machine learning. LENA skupia się na badaniach akademickich – od Google DeepMind przez Berkeley AI po polskie uczelnie. Jej teksty zawierają zawsze link do oryginalnego papieru."},
@@ -211,7 +211,7 @@ def md_to_html(text):
 
 def og_svg(title, grad, desc=""):
     t = html.escape(title[:60])
-    d = html.escape((desc or "AIPULS.PL · AI News")[:80])
+    d = html.escape((desc or "AIFAKT.COM · AI News")[:80])
     return (
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">'
@@ -226,7 +226,7 @@ def og_svg(title, grad, desc=""):
         f'<text x="60" y="310" font-family="Inter,Arial,sans-serif" font-size="28" '
         f'fill="#8888aa">{d}</text>'
         f'<text x="60" y="560" font-family="Inter,Arial,sans-serif" font-size="32" '
-        f'font-weight="800" fill="#22d3ee">AIPULS.PL</text>'
+        f'font-weight="800" fill="#22d3ee">AIFAKT.COM</text>'
         '</svg>'
     )
 
@@ -257,16 +257,16 @@ def _send_welcome_email(email, lang):
     try:
         _resend_lib.api_key = api_key
         subjects = {
-            "pl": "Witaj w AIPULS! 🤖",
-            "en": "Welcome to AIPULS! 🤖",
-            "de": "Willkommen bei AIPULS! 🤖",
+            "pl": "Witaj w AIFAKT! 🤖",
+            "en": "Welcome to AIFAKT! 🤖",
+            "de": "Willkommen bei AIFAKT! 🤖",
         }
         subject = subjects.get(lang, subjects["en"])
         body_html = f"""
 <div style="font-family:Inter,Arial,sans-serif;background:#080810;color:#f0f0f8;max-width:600px;margin:0 auto;padding:40px 32px;border-radius:12px">
-  <div style="font-size:1.6rem;font-weight:900;margin-bottom:8px">AIPULS<span style="color:#22d3ee">.PL</span></div>
+  <div style="font-size:1.6rem;font-weight:900;margin-bottom:8px">AIFAKT<span style="color:#22d3ee">.COM</span></div>
   <div style="font-size:.8rem;color:#44445a;margin-bottom:32px;border-bottom:1px solid #1a1a2e;padding-bottom:20px">AI Media Platform</div>
-  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:16px">Witaj w AIPULS! 🎉</h1>
+  <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:16px">Witaj w AIFAKT! 🎉</h1>
   <p style="color:#8888aa;line-height:1.7;margin-bottom:20px">
     Cieszmy się, że dołączyłeś do naszej społeczności. Każdego dnia o 8:00 dostarczamy najważniejsze newsy ze świata AI — napisane przez naszych wirtualnych redaktorów MAKS, ZARA, VIKTOR, LENA i KODY.
   </p>
@@ -288,7 +288,7 @@ def _send_welcome_email(email, lang):
   </p>
 </div>"""
         _resend_lib.Emails.send({
-            "from":    "AIPULS.PL <newsletter@aipuls.pl>",
+            "from":    "AIFAKT.COM <newsletter@aifakt.com>",
             "to":      [email],
             "subject": subject,
             "html":    body_html,
@@ -988,7 +988,7 @@ def nav_html(lang, ui, active=""):
   <div class="nav-inner">
     <a href="/?lang={lang}" class="logo">
       <div class="logo-pulse"></div>
-      <div class="logo-text">AIPULS<span>.PL</span></div>
+      <div class="logo-text">AIFAKT<span>.COM</span></div>
     </a>
     <div class="logo-tagline">{html.escape(ui['tagline'])}</div>
     <div class="nav-links">{nav_links}</div>
@@ -1049,7 +1049,7 @@ def newsletter_html(ui, suffix=""):
 def footer_html(lang):
     return f"""<footer>
   <div class="footer">
-    <div class="footer-brand">AIPULS<span>.PL</span> · AI Media Platform</div>
+    <div class="footer-brand">AIFAKT<span>.COM</span> · AI Media Platform</div>
     <div class="footer-links">
       <a href="/sitemap.xml" class="footer-link">Sitemap</a>
       <a href="/robots.txt" class="footer-link">Robots</a>
@@ -1165,7 +1165,7 @@ def short_card_html(s):
 
 def page_shell(title, lang, body, desc="", og_grad="", canonical=""):
     esc_title = html.escape(title)
-    esc_desc  = html.escape(desc or "Najlepsze newsy AI po polsku i w 10 językach · AIPULS.PL")
+    esc_desc  = html.escape(desc or "Najlepsze newsy AI po polsku i w 10 językach · AIFAKT.COM")
     og_url    = f"/og/{abs(hash(title))}.svg"
     can       = canonical or f"{base_url()}"
     return f"""<!DOCTYPE html>
@@ -1174,14 +1174,14 @@ def page_shell(title, lang, body, desc="", og_grad="", canonical=""):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080810">
-<title>{esc_title} · AIPULS.PL</title>
+<title>{esc_title} · AIFAKT.COM</title>
 <meta name="description" content="{esc_desc}">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{esc_title}">
 <meta property="og:description" content="{esc_desc}">
 <meta property="og:image" content="{og_url}">
-<meta property="og:site_name" content="AIPULS.PL">
+<meta property="og:site_name" content="AIFAKT.COM">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{esc_title}">
 <meta name="twitter:description" content="{esc_desc}">
@@ -1204,7 +1204,7 @@ def render_index(lang):
     shorts   = fetch_shorts(8)
     if not articles:
         body = nav_html(lang, ui,"home") + f'<div class="page" style="padding-top:60px;color:var(--t3);text-align:center">{html.escape(ui["no_art"])}</div>' + footer_html(lang)
-        return page_shell("AIPULS.PL", lang, body)
+        return page_shell("AIFAKT.COM", lang, body)
     tick = ticker_html(articles)
     _tabs = tabs_html(articles, lang, ui)
     _hero = hero_html(articles[0], lang, ui)
@@ -1253,7 +1253,7 @@ def render_index(lang):
   {newsletter_html(ui)}
 </div>
 {footer_html(lang)}"""
-    return page_shell("AIPULS.PL · AI News", lang, body)
+    return page_shell("AIFAKT.COM · AI News", lang, body)
 
 
 def render_article(article_id, lang):
@@ -1322,7 +1322,7 @@ def render_article(article_id, lang):
   </div>
   <h1 class="art-title">{title}</h1>
   <div class="art-byline">
-    <span>AIPULS.PL</span><span style="opacity:.3">·</span>
+    <span>AIFAKT.COM</span><span style="opacity:.3">·</span>
     <span>{dom}</span><span style="opacity:.3">·</span>
     <span>{date}</span>
   </div>
@@ -1397,7 +1397,7 @@ function toggleShort(uid){{
     :'Rozwiń skrypt <i class="chevron">▾</i>';
 }}
 </script>"""
-    return page_shell(f"{ui['shorts']} · AIPULS.PL", lang, body)
+    return page_shell(f"{ui['shorts']} · AIFAKT.COM", lang, body)
 
 
 def render_tools(lang):
@@ -1465,7 +1465,7 @@ document.querySelectorAll('[data-cat]').forEach(tab=>{{
   }});
 }});
 </script>"""
-    return page_shell(f"{ui['tools']} · AIPULS.PL", lang, body)
+    return page_shell(f"{ui['tools']} · AIFAKT.COM", lang, body)
 
 
 def render_about(lang):
@@ -1499,7 +1499,7 @@ def render_about(lang):
 {nav_html(lang, ui, "about")}
 <div class="page">
   <div class="about-hero">
-    <h1 class="about-title">O <span>AIPULS</span>.PL</h1>
+    <h1 class="about-title">O <span>AIFAKT</span>.PL</h1>
     <p class="about-lead">Automatyczna platforma medialna o sztucznej inteligencji. Pięcioro wirtualnych redaktorów przetwarza setki źródeł każdego dnia i tworzy artykuły, shorty i tłumaczenia w 10 językach — bez udziału człowieka.</p>
   </div>
   <div class="stats-row">{stats_html}</div>
@@ -1521,7 +1521,7 @@ def render_about(lang):
   {newsletter_html(ui)}
 </div>
 {footer_html(lang)}"""
-    return page_shell(f"{ui['about']} · AIPULS.PL", lang, body)
+    return page_shell(f"{ui['about']} · AIFAKT.COM", lang, body)
 
 
 def render_404(lang):
@@ -1535,7 +1535,7 @@ def render_404(lang):
   <a href="/?lang={lang}" class="err-btn">{html.escape(ui['404_btn'])}</a>
 </div>
 {footer_html(lang)}"""
-    return page_shell("404 · AIPULS.PL", lang, body)
+    return page_shell("404 · AIFAKT.COM", lang, body)
 
 
 def _app_from_short(s):
@@ -1649,8 +1649,8 @@ document.querySelectorAll('[data-cat]').forEach(tab=>{{
   }});
 }});
 </script>"""
-    return page_shell("Apps · AIPULS.PL", lang, body,
-                      desc=f"AI App Download Center — {len(apps)} aplikacji zainspirowanych shortami AIPULS.PL")
+    return page_shell("Apps · AIFAKT.COM", lang, body,
+                      desc=f"AI App Download Center — {len(apps)} aplikacji zainspirowanych shortami AIFAKT.COM")
 
 
 def _fake_views(short_id, score):
@@ -1744,7 +1744,7 @@ def render_youtube(lang):
     <div style="display:flex;align-items:center;gap:12px">
       <span style="font-size:1.6rem">▶</span>
       <div>
-        <div style="font-size:1rem;font-weight:900;color:var(--t1)">AIPULS.PL</div>
+        <div style="font-size:1rem;font-weight:900;color:var(--t1)">AIFAKT.COM</div>
         <div style="font-size:.72rem;color:var(--t3)">YouTube &amp; Shorts Hub</div>
       </div>
     </div>
@@ -1769,8 +1769,8 @@ document.querySelectorAll('[data-av]').forEach(t=>{{
   }});
 }});
 </script>"""
-    return page_shell("YouTube Hub · AIPULS.PL", lang, body,
-                      desc=f"Wszystkie shorty AIPULS.PL — {len(shorts)} wideo na TikTok, Instagram i YouTube Shorts")
+    return page_shell("YouTube Hub · AIFAKT.COM", lang, body,
+                      desc=f"Wszystkie shorty AIFAKT.COM — {len(shorts)} wideo na TikTok, Instagram i YouTube Shorts")
 
 
 def highlight(text, query):
@@ -1866,7 +1866,7 @@ def render_search(query, lang):
   <div class="grid-articles">{cards_html}</div>
 </div>
 {footer_html(lang)}"""
-    return page_shell(f'Szukaj: {q_esc} · AIPULS.PL', lang, body)
+    return page_shell(f'Szukaj: {q_esc} · AIFAKT.COM', lang, body)
 
 
 def render_sitemap():
@@ -1925,7 +1925,7 @@ class Handler(BaseHTTPRequestHandler):
             self._respond(200, "text/plain", body)
         elif re.match(r'^/og/.*\.svg$', path):
             seg = path.split("/")[-1].replace(".svg","")
-            svg = og_svg("AIPULS.PL · AI News", "").encode()
+            svg = og_svg("AIFAKT.COM · AI News", "").encode()
             self._respond(200, "image/svg+xml", svg)
         else:
             self._html(render_404(lang), 404)
@@ -1965,7 +1965,7 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     init_newsletter_table()
     server = HTTPServer(("0.0.0.0", PORT), Handler)
-    print(f"AIPULS Portal  →  {base_url()}")
+    print(f"AIFAKT Portal  →  {base_url()}")
     print(f"  / → Homepage    /shorts → Shorts    /tools → Tools    /about → About")
     print(f"  /sitemap.xml    /robots.txt    POST /newsletter")
     try:

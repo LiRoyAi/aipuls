@@ -2,7 +2,7 @@ import sqlite3, os, json, subprocess
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "neuronews.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aifakt.db")
 PORT = 8080
 
 AGENTS = [
@@ -52,7 +52,7 @@ def agent_running(script):
                 name = script.replace("_agent.py","").replace("_"," ").title()
                 mins = int(dead_sec // 60)
                 _mac_notify(
-                    "⚠️ NEURONEWS Agent Offline",
+                    "⚠️ AIFAKT Agent Offline",
                     f"{name} nie odpowiada od {mins} min"
                 )
     return running
@@ -108,7 +108,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NEURONEWS · Live Intelligence</title>
+<title>AIFAKT · Live Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -480,7 +480,7 @@ td { padding: 11px 24px; vertical-align: middle; }
   <div class="header-inner">
     <div class="logo">
       <div class="logo-mark">NN</div>
-      <div class="logo-text">NEURO<span>NEWS</span></div>
+      <div class="logo-text">AI<span>FAKT</span></div>
     </div>
     <div class="live-pill"><div class="live-dot"></div>LIVE</div>
 
@@ -778,7 +778,7 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     server = HTTPServer(("0.0.0.0", PORT), Handler)
-    print(f"NEURONEWS Dashboard  →  http://localhost:{PORT}")
+    print(f"AIFAKT Dashboard  →  http://localhost:{PORT}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

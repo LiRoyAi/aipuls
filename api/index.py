@@ -11,12 +11,26 @@ from datetime import datetime
 
 # ── Path + env setup ─────────────────────────────────────────────────────────
 
-_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _root not in sys.path:
-    sys.path.insert(0, _root)
+_root    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_api_dir = os.path.dirname(os.path.abspath(__file__))
+for _p in (_root, _api_dir):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
-if not os.getenv("DB_PATH"):
-    os.environ["DB_PATH"] = os.path.join(_root, "neuronews.db")
+# ── DB selection: real aifakt.db or in-memory demo fallback ──────────────────
+
+_demo_mode = False
+_real_db   = os.getenv("DB_PATH") or os.path.join(_root, "aifakt.db")
+
+if os.path.isfile(_real_db):
+    os.environ["DB_PATH"] = _real_db
+else:
+    try:
+        from demo_db import build_demo_db
+        os.environ["DB_PATH"] = build_demo_db()
+        _demo_mode = True
+    except Exception:
+        _demo_mode = True
 
 # ── Coming Soon page ─────────────────────────────────────────────────────────
 
@@ -25,7 +39,7 @@ _COMING_SOON = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIPULS.PL - Coming Soon</title>
+<title>AIFAKT.COM - Coming Soon</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:#080810;color:#f0f0f8;
@@ -61,7 +75,7 @@ form button{background:#22d3ee;color:#000;font-weight:800;padding:11px 22px;
 </head>
 <body>
 <div class="w">
-  <div class="logo"><span class="dot"></span>AIPULS<span>.PL</span></div>
+  <div class="logo"><span class="dot"></span>AIFAKT<span>.COM</span></div>
   <div class="tag">AI Media Platform</div>
   <h1>AI News Platform dla Polski</h1>
   <p class="sub">Autonomiczny system AI skanuje swiat AI 24/7 i dostarcza
@@ -78,7 +92,7 @@ form button{background:#22d3ee;color:#000;font-weight:800;padding:11px 22px;
     <button type="submit">Zapisz sie</button>
   </form>
   <div class="ok" id="ok">Zapisano! Odezwiemy sie przy starcie.</div>
-  <div class="ft">Powered by Ollama / NLLB-200 / qwen2.5:14b / 2026 AIPULS.PL</div>
+  <div class="ft">Powered by Ollama / NLLB-200 / qwen2.5:14b / 2026 AIFAKT.COM</div>
 </div>
 <script>
 async function sub(e){
@@ -147,6 +161,19 @@ def app(environ, start_response):
         resp = b'{"ok":true}'
         start_response("200 OK", [
             ("Content-Type","application/json"),
+            ("Content-Length", str(len(resp))),
+        ])
+        return [resp]
+
+    # ── GET /api/status ───────────────────────────────────────────────────────
+    if method == "GET" and path.rstrip("/") == "/api/status":
+        resp = json.dumps({
+            "status": "demo" if _demo_mode else "live",
+            "db": "in-memory" if _demo_mode else "aifakt.db",
+            "site": "aifakt.com",
+        }, ensure_ascii=False).encode("utf-8")
+        start_response("200 OK", [
+            ("Content-Type", "application/json; charset=utf-8"),
             ("Content-Length", str(len(resp))),
         ])
         return [resp]

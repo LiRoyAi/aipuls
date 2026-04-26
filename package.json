@@ -1,7 +1,7 @@
 {
-  "name": "aipuls-portal",
+  "name": "aifakt-portal",
   "version": "1.0.0",
-  "description": "AIPULS.PL — AI news portal (Node.js Express wrapper around portal.py)",
+  "description": "AIFAKT.COM — AI news portal (Node.js Express wrapper around portal.py)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
