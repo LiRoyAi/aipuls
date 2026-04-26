@@ -1,0 +1,11 @@
+server.js
+requirements-agents.txt
+scout_agent.py
+writer_agent.py
+translation_agent.py
+shorts_agent.py
+social_agent.py
+dashboard.py
+/tmp
+*.log
+node_modules
